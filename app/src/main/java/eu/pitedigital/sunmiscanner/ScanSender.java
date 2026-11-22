@@ -24,6 +24,7 @@ public class ScanSender {
     private static final Handler main = new Handler(Looper.getMainLooper());
 
     public static synchronized void logLine(String s) {
+        android.util.Log.d("L2Bridge", s);
         lines.add(ts.format(new Date()) + "  " + s);
         while (lines.size() > 12) lines.removeFirst();
     }
