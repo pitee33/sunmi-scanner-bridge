@@ -42,7 +42,11 @@ public class ScanService extends Service {
                 String code = i.getStringExtra("data");
                 if (code != null && !code.isEmpty()) {
                     ScanSender.logLine("SCAN " + code);
-                    ScanSender.send(ScanService.this, code);
+                    if ("bt".equals(ScanSender.transport)) {
+                        ScanBtServer.send(code);
+                    } else {
+                        ScanSender.send(ScanService.this, code);
+                    }
                 }
             }
         };
@@ -59,6 +63,10 @@ public class ScanService extends Service {
         SharedPreferences p = c.getSharedPreferences("bridge", MODE_PRIVATE);
         ScanSender.host = p.getString("host", "");
         ScanSender.port = p.getInt("port", 8989);
+        ScanSender.transport = p.getString("transport", "tcp");
+        if ("bt".equals(ScanSender.transport)) {
+            ScanBtServer.ensureStarted();
+        }
     }
 
     @Override

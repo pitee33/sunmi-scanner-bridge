@@ -20,13 +20,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Vonalkód → gép (TCP, WiFi vagy USB)" />
+            android:text="Vonalkód → gép (WiFi / USB / Bluetooth)" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Windows gép IP címe:" />
+            android:text="Kapcsolat típusa:" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/tcp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WiFi / USB (TCP)" />
+
+            <RadioButton
+                android:id="@+id/bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bluetooth (párosítás után)" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Windows gép IP címe (WiFi/USB módban):" />
 
         <EditText
             android:id="@+id/host"
@@ -58,6 +82,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Teszt küldés" />
+
+        <Button
+            android:id="@+id/pair"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BT láthatóság (párosításhoz)" />
 
         <TextView
             android:id="@+id/log"

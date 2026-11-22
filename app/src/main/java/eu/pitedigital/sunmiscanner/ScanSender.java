@@ -17,6 +17,7 @@ public class ScanSender {
 
     public static volatile String host = "";
     public static volatile int port = 8989;
+    public static volatile String transport = "tcp";
 
     private static final ArrayDeque<String> lines = new ArrayDeque<String>();
     private static final SimpleDateFormat ts = new SimpleDateFormat("HH:mm:ss", Locale.US);

@@ -4,13 +4,14 @@ Sunmi L2 (Android 7.1 PDA, Zebra scanner) → Windows gép vonalkód-„keyboard
 
 ```
 L2 scan gomb ─▶ com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED broadcast
-          ─▶ L2 Scan Bridge app (TCP) ─▶ scan-type.ps1 (Windows) ─▶ SendKeys az aktív ablakba
+          ─▶ L2 Scan Bridge app ─▶ TCP (WiFi/USB) vagy SPP (Bluetooth)
+          ─▶ scan-type.ps1 / scan-type-bt.ps1 (Windows) ─▶ SendKeys az aktív ablakba
 ```
 
 ## Miért így?
 
 - A L2-nek **nincs USB-HID „keyboard wedge” módja** — USB-n csak MTP/ADB-ként látszik, a Win nem látja szkennernek.
-- **BT-s billentyű-emuláció sem lehetséges**: a BluetoothHIDDevice API csak Android 9-től létezik, a L2 7.1-en fut.
+- **BT-s billentyű-emuláció (HID) nem lehetséges**: a BluetoothHIDDevice API csak Android 9-től létezik, a L2 7.1-en fut. Helyette a klasszikus **SPP (soros port) profil** megy: párosítás után a Windows COM porton kapja a scaneket.
 - A scanner viszont gyárilag broadcastolja a beolvasott kódot (`data` extra), erre épül a híd.
 
 ## Windows oldal
@@ -25,6 +26,15 @@ L2 scan gomb ─▶ com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED broadcast
    `powershell -ExecutionPolicy Bypass -File "C:\scan-type.ps1"`
 
 A beolvasott kód annak az ablaknak íródik be, ahol a kurzor áll (Excel, böngésző, ERP…), utána Enter — egy hagyományos USB szkenner viselkedése.
+
+## Bluetooth mód (kábel és WiFi nélkül)
+
+1. L2 app: „Kapcsolat típusa” → **Bluetooth (párosítás után)** → Mentés és indítás.
+2. App: **BT láthatóság (párosításhoz)** gomb (5 percre látható lesz), majd a gépen párosítsd (Windows Bluetooth → eszköz hozzáadása).
+3. Windows: Bluetooth beállítások → **További Bluetooth-beállítások → COM portok** fül → jegyezd fel a „Kimenő” COM portot (pl. COM5).
+4. Indítás: `powershell -ExecutionPolicy Bypass -File .\scan-type-bt.ps1 -Port COM5`
+
+A kapcsolatot a L2 automatikusan újrapróbálja; a gép oldaláról a COM port nyitva tartása elég.
 
 ## L2 oldal
 
