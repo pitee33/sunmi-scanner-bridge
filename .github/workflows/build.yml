@@ -14,7 +14,15 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Set up Android SDK
+        run: |
+          mkdir -p "$HOME/android-sdk/cmdline-tools"
+          curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/ct.zip
+          unzip -q /tmp/ct.zip -d /tmp/ct
+          mv /tmp/ct/cmdline-tools "$HOME/android-sdk/cmdline-tools/latest"
+          yes | "$HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
+          "$HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-34" "build-tools;34.0.0" > /dev/null
+          echo "ANDROID_HOME=$HOME/android-sdk" >> "$GITHUB_ENV"
 
       - uses: gradle/actions/setup-gradle@v4
         with:
